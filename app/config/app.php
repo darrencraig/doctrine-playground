@@ -122,6 +122,12 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
+		'Mitch\LaravelDoctrine\LaravelDoctrineServiceProvider',
+        'Laracasts\Commander\CommanderServiceProvider',
+
+        // ICEFLOW
+        'Iceflow\IceflowServiceProvider',
+        'Iceflow\Users\UserServiceProvider'
 	),
 
 	/*
@@ -188,6 +194,8 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
+
+		'EntityManager' => 'Mitch\LaravelDoctrine\EntityManagerFacade'
 
 	),
 

@@ -1,23 +1,71 @@
 <?php
 
+use Iceflow\Users\Commands\RegisterUserCommand;
+use Iceflow\Users\Repositories\UserRepository;
+use Illuminate\Support\Facades\Redirect;
+use Minus40\Commander\CommandBus;
+
+
 class HomeController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
 
-	public function showWelcome()
+    /**
+     * @var UserRepository
+     */
+    private $users;
+    /**
+     * @var CommandBus
+     */
+    private $bus;
+
+    /**
+     * @param UserRepository $users
+     * @param CommandBus $bus
+     */
+    function __construct(UserRepository $users, CommandBus $bus)
+    {
+        $this->users = $users;
+        $this->bus = $bus;
+    }
+
+    public function showWelcome()
 	{
-		return View::make('hello');
+		$input = [
+            'forename' => 'forename',
+            'surname' => 'surname',
+            'email' => 'me@me.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'nationality' => 'British',
+            'marital_status' => 'Single',
+            'sexual_orientation' => 'Straight',
+            'gender' => 'Male',
+            'dob' => '1982-11-12',
+        ];
+
+        $command = new RegisterUserCommand(
+            $input['forename'],
+            $input['surname'],
+            $input['email'],
+            $input['password'],
+            $input['password_confirmation'],
+            $input['nationality'],
+            $input['marital_status'],
+            $input['sexual_orientation'],
+            $input['gender'],
+            $input['dob']
+        );
+
+        try
+        {
+            $this->bus->execute($command);
+            // Flash::success('User has been created');
+            return Redirect::route('admin.users.index');
+        }
+        catch (Exception $e)
+        {
+            dd($e);
+        }
 	}
 
 }

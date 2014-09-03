@@ -53,14 +53,14 @@ return array(
 		),
 
 		'mysql' => array(
-			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'forge',
-			'username'  => 'forge',
-			'password'  => '',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => 'iceflow',
+            'username'  => 'iceflow',
+            'password'  => 'iceflow',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
 		),
 
 		'pgsql' => array(
