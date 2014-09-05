@@ -1,7 +1,9 @@
 <?php namespace Iceflow\Users;
 
 use Doctrine\ORM\Mapping AS ORM;
-use Iceflow\Users\ValueObjects\Name;
+use Iceflow\Core\ValueObjects\Name;
+use Iceflow\Core\ValueObjects\EmailAddress;
+use Iceflow\Core\ValueObjects\DateOfBirth;
 use Mitch\LaravelDoctrine\Traits\Timestamps;
 use Mitch\LaravelDoctrine\Traits\SoftDeletes;
 
@@ -24,12 +26,12 @@ class User
 
     /**
      * @var Name
-     * @ORM\Embedded(class = "Iceflow\Users\ValueObjects\Name")
+     * @ORM\Embedded(class = "Iceflow\Core\ValueObjects\Name")
      */
     public $name;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Embedded(class = "Iceflow\Core\ValueObjects\EmailAddress")
      */
     public $email;
 
@@ -44,7 +46,7 @@ class User
     public $nationality;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Embedded(class = "Iceflow\Core\ValueObjects\DateOfBirth")
      */
     public $dob;
 
@@ -63,44 +65,12 @@ class User
      */
     public $sexual_orientation;
 
-    /**
-     * @return Name
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 
-    /**
-     * @param Name $name
-     */
-    public function setName($name)
+    function __construct(Name $name, EmailAddress $email, $password)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMaritalStatus()
-    {
-        return $this->marital_status;
-    }
-
-    /**
-     * @param mixed $marital_status
-     */
-    public function setMaritalStatus($marital_status)
-    {
-        $this->marital_status = $marital_status;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDob()
-    {
-        return $this->dob;
+        $this->email = $email;
+        $this->password = $password;
     }
 
     /**
@@ -108,71 +78,7 @@ class User
      */
     public function setDob($dob)
     {
-        $this->dob = new \DateTime($dob);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGender()
-    {
-        return $this->gender;
-    }
-
-    /**
-     * @param mixed $gender
-     */
-    public function setGender($gender)
-    {
-        $this->gender = $gender;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNationality()
-    {
-        return $this->nationality;
-    }
-
-    /**
-     * @param mixed $nationality
-     */
-    public function setNationality($nationality)
-    {
-        $this->nationality = $nationality;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
+        $this->dob = $dob;
     }
 
     /**
@@ -214,15 +120,17 @@ class User
      */
     public static function register($forename, $surname, $email, $password, $nationality, $marital_status, $sexual_orientation, $gender, $dob)
     {
-        $user = new static();
-        $user->setName(new Name($forename, $surname));
-        $user->setEmail($email);
-        $user->setPassword($password);
-        $user->setNationality($nationality);
-        $user->setMaritalStatus($marital_status);
-        $user->setSexualOrientation($sexual_orientation);
-        $user->setGender($gender);
-        $user->setDob($dob);
+        $user = new static(
+            new Name($forename, $surname),
+            new EmailAddress($email),
+            $password
+        );
+
+        $user->nationality = $nationality;
+        $user->marital_status = $marital_status;
+        $user->sexual_orientation = $sexual_orientation;
+        $user->gender = $gender;
+        $user->dob = new DateOfBirth($dob);
 
         return $user;
     }

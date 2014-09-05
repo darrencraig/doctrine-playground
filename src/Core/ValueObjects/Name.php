@@ -1,4 +1,4 @@
-<?php namespace Iceflow\Users\ValueObjects;
+<?php namespace Iceflow\Core\ValueObjects;
 
 use Doctrine\ORM\Mapping AS ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping AS ORM;
 class Name
 {
     /**
-     * @ORM\Column(type = "string", length=50
+     * @ORM\Column(type = "string", length=50)
      */
     public $forename;
 
