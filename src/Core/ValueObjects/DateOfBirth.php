@@ -1,6 +1,5 @@
 <?php namespace Iceflow\Core\ValueObjects;
 
-use Config;
 use DateTime;
 use Doctrine\ORM\Mapping AS ORM;
 use Iceflow\Core\ValueObjects\Exceptions\InvalidDateOfBirthException;
@@ -17,11 +16,10 @@ class DateOfBirth
 
     /**
      * @param $date
-     * @throws InvalidDateOfBirthException
      */
-    public function __construct($date)
+    public function __construct($date, $format = "d/m/Y")
     {
-        $this->format = Config::get('iceflow.date-format');
+        $this->format = $format;
         $this->date = DateTime::createFromFormat($this->format, $date);
 
         $this->checkDateIsValid($date);
